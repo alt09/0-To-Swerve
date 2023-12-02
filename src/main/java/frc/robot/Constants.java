@@ -15,6 +15,7 @@ package frc.robot;
 
 import java.util.Optional;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -55,6 +56,15 @@ public final class Constants {
     }
 
     public static final int CANConfigTimeout = 500;
-    public static final double loopPeriodSecs = 0.02;
+    public static final double LOOP_PERIODIC_SEC = 0.02;
+  }
+
+  
+  public static class OperatorConstants {
+    public static final int DRIVER_CONTROLLER = 0;
+  }
+
+  public static class SwerveConstants {
+    public static final double WHEEL_RADIUS_METERS = Units.inchesToMeters(1.5);
   }
 } 

@@ -33,11 +33,11 @@ public class RobotContainer {
       driveController = new CommandXboxController(OperatorConstants.driveController);
 
       configureBindings();
+      
   }
 
-  public static class OperatorConstants {
-    public static final int driveController = 0;
-  }
+  
+  
 
   private void configureBindings() {}
 

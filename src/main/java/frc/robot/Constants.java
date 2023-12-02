@@ -54,7 +54,10 @@ public final class Constants {
       return DriverStation.getAlliance();
     }
 
-    public static final int CANConfigTimeout = 500;
-    public static final double loopPeriodSecs = 0.02;
+    public static final int CAN_CONFIG_TIMEOUT = 500;
+    public static final double LOOP_PERIOD_SECS = 0.02;
+  }
+  public static class OperatorConstants {
+    public static final int DRIVE_CONTROLLER = 0;
   }
 } 

@@ -18,6 +18,7 @@ import java.util.Optional;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.math.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -54,7 +55,30 @@ public final class Constants {
       return DriverStation.getAlliance();
     }
 
-    public static final int CANConfigTimeout = 500;
-    public static final double loopPeriodSecs = 0.02;
+    public static final int CAN_CONFIG_TIMEOUT = 500;
+    public static final double LOOP_PERIOD_SECS = 0.02;
+  }
+  public static class OperatorConstants {
+    public static final int DRIVE_CONTROLLER = 0;
+  }
+
+
+  public static class DRIVE_CONSTANTS {
+    public static final double WHEEL_RADIUS_METERS = Units.inchesToMeters(2);
+    public static final double[] [] ORIGIN_POINT = new double[4] [2]; //x,y coordinate of module point
+    public static final double ANGLE_RADIANS = 0;
+    public static final double[] VELOCITY_M_PER_SEC = new double [2];
+    public static final double ANGLE_VELOCITY_DEGREES_PER_SEC = 0;
+
+    public static final double[] STEERING_ANGLE_DEGREES = new double[4];
+    public static final double[] WHEEL_ANGULAR_VELOCITY_DEGREES_PER_SEC = new double[4];
+
+    public static final double[] LAST_STEERING_ANGLES_DEG = new double[4];
+    public static final double[] LAST_WHEEL_ANGULAR_VELOCITY_DEG_PER_SEC = new double[4];
+
+    public static final double[] DESIRED_STEERING_ANGLES_DEG = new double[4];
+    public static final double[] DESIRED_WHEEL_ANGULAR_VELOCITY_DEG_PER_SEC = new double[4];
+
+    
   }
 } 

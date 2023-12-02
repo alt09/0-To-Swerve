@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.RobotConstants;
 
 public class RobotContainer {
@@ -27,7 +28,7 @@ public class RobotContainer {
       // Replayed robot, disable IO implementations
       default:
       System.out.println("Robot Current Mode; default");
-        break;
+        break; 
       }
     
       driveController = new CommandXboxController(OperatorConstants.driveController);
@@ -35,9 +36,6 @@ public class RobotContainer {
       configureBindings();
   }
 
-  public static class OperatorConstants {
-    public static final int driveController = 0;
-  }
 
   private void configureBindings() {}
 
@@ -45,3 +43,4 @@ public class RobotContainer {
     return null;
   }
 }
+

@@ -96,6 +96,8 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    }
+  
   }
 
   /** This function is called once when autonomous is enabled. */

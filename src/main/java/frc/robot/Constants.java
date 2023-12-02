@@ -40,6 +40,8 @@ public final class Constants {
       REPLAY
     }
 
+
+    
     public static Mode getMode() {
       if (RobotBase.isReal()) {
         return Mode.REAL;
@@ -49,12 +51,37 @@ public final class Constants {
         return Mode.REPLAY;
       }
     }
-
+    
     public static Optional<Alliance> getAlliance() {
       return DriverStation.getAlliance();
     }
+    
+    public static final int CAN_CONFIG_TIMEOUT = 500;
+    public static final double LOOP_PERIOD_SECS = 0.02;
+  }
 
-    public static final int CANConfigTimeout = 500;
-    public static final double loopPeriodSecs = 0.02;
+  public static class DriveConstants{
+
+    // public static final double WHEEL_DIAMETER_METERS = 0.0762; //3 inches
+
+    private static final double[][] ORIGIN_POINT = new double[4][2];  // four modules and each one has a x y coordinate so an array withing an array 
+
+    //robot state values
+    // private static final double ANGLE_RADIANS = 0.0;   //angle from xF to xV (comes from gyro sensor)
+    // private static final double[] VELOCITY_POINT0_METERS_PER_SEC = new double[2];  //desired linear velocity of the robot
+    // private static final double ANGLE_VELOCITY_DEGREES_PER_SEC = 0.0;  // desired angular velocity of robot chassis
+    
+    private static final double[] STEERING_ANGLES_DEGREES = new double[4];
+    private static final double[] WHEEL_ANGULAR_VELOCITY_DEGREES_PER_SEC = new double[4];
+
+    private static final double[] LAST_STEERING_ANGLES_DEGREES = new double[4];
+    private static final double[] LAST_WHEEL_ANGULAR_VELOCITY_DEGREESPER_SEC = new double[4];
+
+    private static final double[] DESIRED_STEERING_ANGLES_DEGREES = new double[4];
+    private static final double[] DESIRED_WHEEL_ANGULAR_VELOCITY_DEGREES_PER_SEC = new double[4];
+  }
+
+  public static class OperatorConstants {
+    public static final int DRIVE_CONTROLLER = 0;
   }
 } 

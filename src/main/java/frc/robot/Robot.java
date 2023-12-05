@@ -45,7 +45,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotInit() {
     // Record metadata
-    SmartDashboard.putString("Version", "1.1.10.1.1"); //repo : pushes_to_dev : branch/issue number : commits (# in github) : 0 for functioning and 1 for not functioning
+    SmartDashboard.putString("Version", "1.1.10.2.0"); //repo : pushes_to_dev : branch/issue number : commits (# in github) : 0 for functioning and 1 for not functioning
 
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);

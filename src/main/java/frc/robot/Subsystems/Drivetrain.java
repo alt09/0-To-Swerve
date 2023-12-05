@@ -5,6 +5,7 @@
 package frc.robot.Subsystems;
 import java.lang.Math;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
@@ -15,6 +16,7 @@ public class Drivetrain extends SubsystemBase {
   private  double[][] ORIGIN_POINT = new double[4][2];  // four modules and each one has a x y coordinate so an array withing an array 
   private  double[] VELOCITY_POINT0_METERS_PER_SEC = new double[2];  //desired linear velocity of the robot
   private  double ANGLE_VELOCITY_DEGREES_PER_SEC;  // desired angular velocity of robot chassis 
+  private double[] DESIRED_STEERING_ANGLES_DEGREES = new double[4];
   public Drivetrain() {
   }
 
@@ -41,21 +43,26 @@ public class Drivetrain extends SubsystemBase {
 
   public void calcSwerveSteeringAndSpeed(){
   int i;
-  double sv, cv;
+  double sineValue, cosineValue;
 
-  cv = Math.cos(this.ANGLE_RADIANS);
-  sv = Math.sin(this.ANGLE_RADIANS);
+  cosineValue = Math.cos(this.ANGLE_RADIANS);
+  sineValue = Math.sin(this.ANGLE_RADIANS);
 
   // calculate the vehicle velocity in the which coord sys
   double[] v0InRobot = new double[2];
-  v0InRobot[0] = cv * this.VELOCITY_POINT0_METERS_PER_SEC[0] + sv * this.VELOCITY_POINT0_METERS_PER_SEC[1];
-  v0InRobot[1] = -sv * this.VELOCITY_POINT0_METERS_PER_SEC[0] + cv * this.VELOCITY_POINT0_METERS_PER_SEC[1];
+  v0InRobot[0] = cosineValue * this.VELOCITY_POINT0_METERS_PER_SEC[0] + sineValue * this.VELOCITY_POINT0_METERS_PER_SEC[1];  // this is your original pythagorem theorm 
+  v0InRobot[1] = -sineValue * this.VELOCITY_POINT0_METERS_PER_SEC[0] + cosineValue * this.VELOCITY_POINT0_METERS_PER_SEC[1];
 
   double[] v_i = new double[2];
   double speed;
 
   for (i=0; i<4; ++i) {
-    v_i[0] = v0InRobot[0] - this.ANGLE_VELOCITY_DEGREES_PER_SEC*this.   // where I left off 
+    v_i[0] = v0InRobot[0] - this.ANGLE_VELOCITY_DEGREES_PER_SEC*Units.degreesToRadians(ORIGIN_POINT[i][1]);  // v_i is the new pythagorem theorm value 
+    v_i[1] = v0InRobot[1] + this.ANGLE_VELOCITY_DEGREES_PER_SEC*Units.degreesToRadians(ORIGIN_POINT[i][0]);
+
+    speed = Math.sqrt(v_i[0]*v_i[0] + v_i[1]*v_i[1]);
+    this.DESIRED_STEERING_ANGLES_DEGREES[i] = Units.degreesToRadians(Math.atan2(v_i[1], v_i[0]));
+    this.
   }
   }
 

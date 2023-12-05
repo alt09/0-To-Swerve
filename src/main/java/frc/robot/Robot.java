@@ -20,6 +20,8 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.RobotConstants;
@@ -43,6 +45,9 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotInit() {
     // Record metadata
+
+    //Repo, push to dev, branch/ issue number, person, commit numbers, functioning or not (1 or 0) 0 if in dev 
+    SmartDashboard.putNumber("1.1.5.6.0");
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
     Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);

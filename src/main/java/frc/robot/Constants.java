@@ -77,7 +77,7 @@ public final class Constants {
     private static final double[] LAST_STEERING_ANGLES_DEGREES = new double[4];
     private static final double[] LAST_WHEEL_ANGULAR_VELOCITY_DEGREESPER_SEC = new double[4];
 
-    private static final double[] DESIRED_STEERING_ANGLES_DEGREES = new double[4];
+    // private static final double[] DESIRED_STEERING_ANGLES_DEGREES = new double[4];
     private static final double[] DESIRED_WHEEL_ANGULAR_VELOCITY_DEGREES_PER_SEC = new double[4];
   }
 

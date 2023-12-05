@@ -56,7 +56,7 @@ public class Drive {
         this.origin_pt[3][0] =  d ;   // module 3 is in the +x,-y quadrant
         this.origin_pt[3][1] = -d ;
     }
-    void initialize_steering_angles_and_wheel_speeds(double[] steering_ang_deg,
+void initialize_steering_angles_and_wheel_speeds(double[] steering_ang_deg,
     double[] wheel_speeds_deg_per_sec)
 {
 int i ;
@@ -67,13 +67,6 @@ this.wheelAngularVel[i] = wheel_speeds_deg_per_sec[i] ;
 }
 }
 void calc_swerve_steering_and_speed()
-// This method uses the current values for:
-//        this.ang_rad,
-//        this.vel_pt0_m_per_sec
-//        this.ang_vel_deg_per_sec
-// and calculates and updates the values for:
-//        this.desired_steering_angles_deg  (a length 4 array of doubles)
-//        this.desired_wheel_angular_vel_deg_per_sec (a length 4 array of doubles)
 {
 int i ;
 double sv, cv ;

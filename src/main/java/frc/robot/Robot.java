@@ -20,6 +20,8 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.RobotConstants;
@@ -58,7 +60,17 @@ public class Robot extends LoggedRobot {
       default:
         Logger.recordMetadata("GitDirty", "Unknown");
         break;
-    }
+
+        //Code Version
+      }
+      SmartDashboard.putString("Code Version", "1.1.3.1.1"); // Update Regularlly!!!!
+       /*
+      First Number  - Repository
+      Second Number - Pushes to Dev
+      Third Number - Issue #
+      Fourth Number - # of Commits
+      Fifth Number - Functionality (0 = Runnable/Works, 1 = Code doesn't function)
+      */
 
     // Set up data receivers & replay source
     switch (RobotConstants.getMode()) {

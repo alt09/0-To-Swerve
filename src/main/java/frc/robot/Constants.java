@@ -54,7 +54,22 @@ public final class Constants {
       return DriverStation.getAlliance();
     }
 
-    public static final int CANConfigTimeout = 500;
-    public static final double loopPeriodSecs = 0.02;
+    public static final int CAN_CONFIG_TIMEOUT_SEC = 500;
+    public static final double LOOP_PERIOD_SEC = 0.02;
+  }
+
+  public static class OperatorConstants {
+    public static final int DRIVE_CONTROLLER = 0;
+  }
+
+  public static class DriveConstants {
+    public static final double WHEEL_DIAMETER_IN = 0.0; //
+    public static final double[][] ORIGIN_POINT = new double[4][2]; //array of 
+
+    public static double ANGLE_RAD;
+    public static double[] LIN_VELOCITY_M_PER_SEC = new double[2];
+    public static double ANG_VELOCITY_RAD_PER_SEC;
+
+    public static double CURRENT_STEERING_ANG
   }
 } 

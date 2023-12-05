@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.RobotConstants;
 
 public class RobotContainer {
@@ -30,13 +31,8 @@ public class RobotContainer {
         break;
       }
     
-      driveController = new CommandXboxController(OperatorConstants.driveController);
-
+      driveController = new CommandXboxController(OperatorConstants.DRIVE_CONTROLLER);
       configureBindings();
-  }
-
-  public static class OperatorConstants {
-    public static final int driveController = 0;
   }
 
   private void configureBindings() {}

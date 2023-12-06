@@ -15,6 +15,7 @@ package frc.robot;
 
 import java.util.Optional;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -63,13 +64,12 @@ public final class Constants {
   }
 
   public static class DriveConstants {
-    public static final double WHEEL_DIAMETER_IN = 0.0; //
-    public static final double[][] ORIGIN_POINT = new double[4][2]; //array of 
-
-    public static double ANGLE_RAD;
-    public static double[] LIN_VELOCITY_M_PER_SEC = new double[2];
-    public static double ANG_VELOCITY_RAD_PER_SEC;
-
-    public static double CURRENT_STEERING_ANG
+    public static final double WHEEL_DIAMETER_M = Units.inchesToMeters(1.5); //"final" means u can't update it later even with a "this."
+    public static final double CHASSIS_WIDTH_M = Units.inchesToMeters(21.5);
+    public static final double[][] ORIGIN_POINT = { //array of xy coordinate systems
+      {CHASSIS_WIDTH_M, CHASSIS_WIDTH_M},
+      {-CHASSIS_WIDTH_M, CHASSIS_WIDTH_M},
+      {-CHASSIS_WIDTH_M, -CHASSIS_WIDTH_M},
+      {CHASSIS_WIDTH_M, -CHASSIS_WIDTH_M}}; //array of xy coordinate systems
   }
 } 

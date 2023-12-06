@@ -66,22 +66,8 @@ public static class OperatorConstants {
   // Values that wont change for the Drive Train
   public static class DriveConstants{ 
     public static final double WHEEL_RADIUS_METERS = Units.inchesToMeters(1.5);
-    public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(3);
+    public static double WHEEL_DIAMETER_METERS = Units.inchesToMeters(3);
     public static final double[][] ORIGIN_POINT = new double[4][2]; // x,y coords of the four modules
-    // Vehicle states values
-    public static final double ANGLE_RADIANS = 0;
-    public static final double[] VEL_ORIGIN_METERS_PER_SEC = new double[2];
-    public static final double ANGLE_VEL_DEG_PER_SEC = 0; 
-
-    public static final double[] STEERING_ANGLE_DEG = new double[4];
-    public static final double[] WHEEL_ANGULAR_VEL_DEG_PER_SEC = new double [4];
-
-    public static final double[] LAST_STEEROMG_ANGLES_DEG = new double[4];
-    public static final double[] LAST_WHEEL_ANGULAR_VEL_DEG_PER_SEC = new double[4];
-
-    public static final double[] DESIRED_STEERING_ANGLE_DEG = new double[4];
-    public static final double[] DESIRED_WHEEL_ANGULAR_VEL_DEG_PER_SEC = new double[4];
-
     /* Examples Values
     26 x 26 inches for track width
     4 inches for diameter

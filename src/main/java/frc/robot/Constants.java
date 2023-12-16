@@ -64,7 +64,8 @@ public final class Constants {
 
 
   public static class DRIVE_CONSTANTS {
-    public static final double WHEEL_RADIUS_METERS = Units.inchesToMeters(2);
+    public static double WHEEL_RADIUS_METERS = Units.inchesToMeters(1.5);
+    public static double WHEEL_DIAMETER_METERS = Units.inchesToMeters(3);
     public static final double[] [] ORIGIN_POINT = new double[4] [2]; //x,y coordinate of module point
     public static final double ANGLE_RADIANS = 0;
     public static final double[] VELOCITY_M_PER_SEC = new double [2];

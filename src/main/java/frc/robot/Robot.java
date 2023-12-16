@@ -63,7 +63,7 @@ public class Robot extends LoggedRobot {
 
         //Code Version
       }
-      SmartDashboard.putString("Version", "1.1.2.1.1");
+      SmartDashboard.putString("Version", "1.1.2.4.1");
 
     // Set up data receivers & replay source
     switch (RobotConstants.getMode()) {

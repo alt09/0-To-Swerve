@@ -65,9 +65,9 @@ public static class OperatorConstants {
   
   // Values that wont change for the Drive Train
   public static class DriveConstants{ 
-    public static final double WHEEL_RADIUS_METERS = Units.inchesToMeters(1.5);
-    public static double WHEEL_DIAMETER_METERS = Units.inchesToMeters(3);
-    public static final double[][] ORIGIN_POINT = new double[4][2]; // x,y coords of the four modules
+    public static  double WHEEL_RADIUS_METERS = Units.inchesToMeters(1.5);
+    public static  double WHEEL_DIAMETER_METERS = Units.inchesToMeters(3);
+    public static  double[][] ORIGIN_POINT = new double[4][2]; // x,y coords of the four modules
     /* Examples Values
     26 x 26 inches for track width
     4 inches for diameter

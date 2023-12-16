@@ -63,7 +63,7 @@ public class Robot extends LoggedRobot {
 
         //Code Version
       }
-      SmartDashboard.putString("Code Version", "1.1.3.1.1"); // Update Regularlly!!!!
+      SmartDashboard.putString("Code Version", "1.1.3.3.1"); // Update Regularlly!!!!
        /*
       First Number  - Repository
       Second Number - Pushes to Dev
@@ -157,7 +157,9 @@ public class Robot extends LoggedRobot {
 
   /** This function is called once when the robot is first started up. */
   @Override
-  public void simulationInit() {}
+  public void simulationInit() {
+    
+  }
 
   /** This function is called periodically whilst in simulation. */
   @Override

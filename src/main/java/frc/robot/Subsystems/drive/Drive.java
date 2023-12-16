@@ -9,43 +9,40 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 
-public class Drive extends SubsystemBase {
-  
-    public static double[][] originPoint = new double[4][2]; // x,y coords of the four modules, from the center point of the robot
-    
+public class Drive {
+      
     // Vehicle states values
-    public static double angleRadians; // Distance between desired angle and inital angle
-    public static double[] velOriginMetersPerSec = new double[2]; // Desired linear velocity of the vehicle origin point
-    public static double angleVelDegPerSec; // Desired angular velocity of the chassis
+    public double angleRadians; // Distance between desired angle and inital angle
+    public double[] velOriginMetersPerSec = new double[2]; // Desired linear velocity of the vehicle origin point
+    public double angleVelDegPerSec; // Desired angular velocity of the chassis
 
-    public static double[] currentSteeringAngleDeg = new double[4];
-    public static double[] currentWheelAngularVelDegPerSec = new double [4];
+    public double[] currentSteeringAngleDeg = new double[4];
+    public double[] currentWheelAngularVelDegPerSec = new double [4];
 
-    public static double[] calculatedSteeringAnglesDeg = new double[4];
-    public static double[] calculatedWheelAngularVelDegPerSec = new double[4];
+    public double[] calculatedSteeringAnglesDeg = new double[4];
+    public double[] calculatedWheelAngularVelDegPerSec = new double[4];
 
-    public static double[] recommendedSteeringAnglesDeg = new double[4];
-    public static double[] recommendedWheelAngularVelDegPerSec = new double[4];
+    public double[] recommendedSteeringAnglesDeg = new double[4];
+    public double[] recommendedWheelAngularVelDegPerSec = new double[4];
   
     /** Creates a new Drive. */
-  public Drive() {
-  }
+ 
 
   public void assignVehicalValues(double d, double wheel_d) {
     DriveConstants.WHEEL_DIAMETER_METERS = wheel_d;
 
-    // Defome tje module locations
-    this.originPoint[0][0] =  d;  // module 0 (+x, +y)
-    this.originPoint[0][1] =  d;
+    // Defome the module locations
+    DriveConstants.ORIGIN_POINT[0][0] =  d;  // module 0 (+x, +y)
+    DriveConstants.ORIGIN_POINT[0][1] =  d;
 
-    this.originPoint[1][0] = -d;  // module 1 (-x, +y)
-    this.originPoint[1][1] =  d;
+    DriveConstants.ORIGIN_POINT[1][0] = -d;  // module 1 (-x, +y)
+    DriveConstants.ORIGIN_POINT[1][1] =  d;
 
-    this.originPoint[2][0] = -d;  // module 2 (-x, -y)
-    this.originPoint[2][1] = -d;
+    DriveConstants.ORIGIN_POINT[2][0] = -d;  // module 2 (-x, -y)
+    DriveConstants.ORIGIN_POINT[2][1] = -d;
 
-    this.originPoint[3][0] =  d;  // module 3 (+x, -y)
-    this.originPoint[3][1] = -d;
+    DriveConstants.ORIGIN_POINT[3][0] =  d;  // module 3 (+x, -y)
+    DriveConstants.ORIGIN_POINT[3][1] = -d;
   }
 
 public void  initalizeSteeringAnglesAndWheelSpeeds(double[] steeringAngleDegree, double[] wheelSpeedsDegPerSec) {
@@ -73,8 +70,8 @@ public void calcSwerveSteeringAndSpeed() {
   double speed;
   for (i = 0 ; i < 4 ; ++i) 
     {
-    v_i[0] = vO_IN_VEHICLE[0] - Units.degreesToRadians(this.angleVelDegPerSec) * this.originPoint[i][1]; // Translates the new x velocity back to the original x velocity
-    v_i[1] = vO_IN_VEHICLE[1] + Units.degreesToRadians(this.angleVelDegPerSec) * this.originPoint[i][0]; // Translates the new y velocity back to the original y velocity
+    v_i[0] = vO_IN_VEHICLE[0] - Units.degreesToRadians(this.angleVelDegPerSec) * DriveConstants.ORIGIN_POINT[i][1]; // Translates the new x velocity back to the original x velocity
+    v_i[1] = vO_IN_VEHICLE[1] + Units.degreesToRadians(this.angleVelDegPerSec) * DriveConstants.ORIGIN_POINT[i][0]; // Translates the new y velocity back to the original y velocity
 
     speed = Math.sqrt(v_i[0] * v_i[0] + v_i[1] * v_i[1]); // Calculates the resultant velocity | Vr = sqrt(Vx^2 + Vy^2)
     this.recommendedSteeringAnglesDeg[i] = Units.radiansToDegrees(Math.atan2(v_i[1], v_i[0])); // Calculates the angle that the robot wants to turn to | 0 = atan2(B, C) * 180/pi
@@ -111,8 +108,7 @@ public void calcSwerveSteeringAndSpeed() {
     }
   }
 
-  public void printResults()
-  {
+  public void printResults() {
       int i ;
       System.out.println("------------------") ;
       System.out.println("\nVehicle Velocity Inputs (from joystick input):") ;
@@ -162,13 +158,62 @@ public void calcSwerveSteeringAndSpeed() {
       {
           System.out.printf("\t\t%.1f", this.recommendedWheelAngularVelDegPerSec[i]) ;  
       }
-      System.out.printf("\tdeg/sec\n") ;
+      System.out.printf("\tdeg/sec\n");
 
   }
+  
+  class main {
+    public void notmain( String args[] ) {
+        
+        Drive veh = new Drive();
+        veh.assignVehicalValues(0.3302, 0.1016) ;
+        
+        double[] initial_steering_deg = {42.5, 33.6, 18.1, 21.9} ;
+        double[] initial_wheel_speed_deg_per_sec = {1.56, 11.3, 4.2, 10.4} ;
+        veh.initalizeSteeringAnglesAndWheelSpeeds(initial_steering_deg, initial_wheel_speed_deg_per_sec) ;
+        
+        // Example Case 1:
+        // set the current vehicle angle
+        veh.angleRadians = Units.degreesToRadians(30.0);
+        
+        // set the desired velocity (linear and angular for the vehicle)
+        veh.velOriginMetersPerSec[0] =  0.5 ;
+        veh.velOriginMetersPerSec[1] =  1.1 ;
+        veh.angleVelDegPerSec  = 20.0 ;
+        
+        veh.calcSwerveSteeringAndSpeed() ;
+        veh.recommendedSwerveSteeringAndSpeed() ;
+                
+        veh.printResults() ;  // print results of case 1     
+        
+        // Example Case 2: (translation case)
+        // set the current vehicle angle
+        veh.angleRadians = Units.degreesToRadians(30.0);
+        
+        // set the desired velocity (linear and angular for the vehicle)
+        veh.velOriginMetersPerSec[0] = 1.1 * Math.cos(Units.degreesToRadians(60.0));
+        veh.velOriginMetersPerSec[1] = 1.1 * Math.sin(Units.degreesToRadians(60.0));
+        veh.angleVelDegPerSec  = 0.0 ;
+        
+        veh.calcSwerveSteeringAndSpeed() ;
+        veh.recommendedSwerveSteeringAndSpeed() ;
+        
+        veh.printResults() ;  // print results of case 2 
+        
+        // Example Case 3: (recommend reverse wheel rotation based on current steering)
+        // set the current vehicle angle
+        veh.angleRadians = Units.degreesToRadians(30.0);
+        
+        // set the desired velocity (linear and angular for the vehicle)
+        veh.velOriginMetersPerSec[0] = -1.1 * Math.cos(Units.degreesToRadians(60.0)) ;
+        veh.velOriginMetersPerSec[1] = -1.1 * Math.sin(Units.degreesToRadians(60.0)) ;
+        veh.angleVelDegPerSec  = -25.0 ;
+        
+        veh.calcSwerveSteeringAndSpeed() ;
+        veh.recommendedSwerveSteeringAndSpeed() ;
+        
+        veh.printResults() ;  // print results of case 3 
+    }
+}
 
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
 }

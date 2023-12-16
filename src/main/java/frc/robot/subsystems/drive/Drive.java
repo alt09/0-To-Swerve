@@ -31,14 +31,14 @@ public class Drive {
     public double[] wheelAngularVel = new double[4]; // velocidad de la rueda cuando gira no para avanzar si no para
                                                      // rotar en degrees/sec
 
-    public double[] lastSteeringAngle = new double[4];// Last Steering Angle. previous angle
-    public double[] lastWheelAngularVel = new double[4]; // Last wheel angular velocity in degrees/sec
+    public double[] lastSteeringAngle = new double[4];// Last Steering Angle. previous anglexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    public double[] lastWheelAngularVel = new double[4]; // Last wheel angular velocity in degrees/secxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     public double[] desiredSteeringAngle = new double[4];// es a donde tu quieres que valla la rueda in degrees
     public double[] DesiredWeelAngularVel = new double[4];// es a cuantos degrees/sec tu quieres que valla la rueda
 
-    public double[] RecommendedSteeringAngles = new double[4];// angle in degree
-    public double[] RecommendedWheelAngularVel = new double[4];// degrees/sec
+    public double[] RecommendedSteeringAngles = new double[4];// angle in degreexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    public double[] RecommendedWheelAngularVel = new double[4];// degrees/secxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     public void assign_veh_values_for_square_vehicle(double d, double wheel_d) {
         // set the wheel diameter
@@ -59,7 +59,7 @@ public class Drive {
         this.origin_pt[3][1] = -d;
     }
 
-    void initialize_steering_angles_and_wheel_speeds(double[] steering_ang_deg,double[] wheel_speeds_deg_per_sec) {
+    public void initialize_steering_angles_and_wheel_speeds(double[] steering_ang_deg,double[] wheel_speeds_deg_per_sec) {
         int i;
         for (i = 0; i < 4; ++i) {
             this.steeringAngle[i] = steering_ang_deg[i];
@@ -67,7 +67,7 @@ public class Drive {
         }
     }
 
-    void calc_swerve_steering_and_speed() {
+    public void calc_swerve_steering_and_speed() {
         int i;
         double sinValue, cosValue;
 
@@ -114,7 +114,7 @@ public class Drive {
             } else {
                 // will add 180 to calculated steering angle and rotate the wheel in the negaive
                 // direction
-                this.RecommendedSteeringAngles[i] = this.steeringAngle[i] + differentialAngle + 180;// it can be - it doesn't matter
+                this.RecommendedSteeringAngles[i] = this.steeringAngle[i] + differentialAngle - 180;// it can be - it doesn't matter
 
                 this.RecommendedWheelAngularVel[i] = -this.lastWheelAngularVel[i];
 
@@ -124,7 +124,127 @@ public class Drive {
                 while (this.RecommendedSteeringAngles[i] - this.steeringAngle[i] < 180.0){
                     this.RecommendedSteeringAngles[i] += 360;
                 }
+
+
+
+                
             }
         }
     }
+
+
+
+        
+    public void print_results()
+    {
+        int i ;
+        System.out.println("------------------") ;
+        System.out.println("\nVehicle Velocity Inputs (from joystick input):") ;
+        System.out.printf("\tvelocity of point 0 = %.4f, %.4f m/sec\n",
+                           this.centerVel[0], this.centerVel[1]) ;
+        System.out.printf("\tangular velocity = %.2f deg/sec\n", this.angularVel) ;
+        System.out.printf("vehicle ang = %.2f degrees (from IMU sensor)\n\n", Units.radiansToDegrees(angle)) ;
+        
+        System.out.println("\t\t\t\tmodule 0\tmodule 1\tmodule 2\tmodule3") ;
+        System.out.printf("current steering ang") ;
+        for (i=0 ; i<4 ; ++i)
+        {
+            System.out.printf("\t\t%.2f", this.steeringAngle[i]) ;  
+        }
+        System.out.printf("\tdeg\n") ;
+        
+        System.out.printf("calculated steering ang") ;
+        for (i=0 ; i<4 ; ++i)
+        {
+            System.out.printf("\t\t%.2f", this.lastSteeringAngle[i]) ;  
+        }
+        System.out.printf("\tdeg\n") ;
+        
+        System.out.printf("recommend steering ang") ;
+        for (i=0 ; i<4 ; ++i)
+        {
+            System.out.printf("\t\t%.2f", this.RecommendedSteeringAngles[i]) ;  
+        }
+        System.out.printf("\tdeg\n\n") ;
+        
+        System.out.printf("current wheel speed") ;
+        for (i=0 ; i<4 ; ++i)
+        {
+            System.out.printf("\t\t%.1f", this.wheelAngularVel[i]) ;  
+        }
+        System.out.printf("\tdeg/sec\n") ;
+        
+        System.out.printf("calculated wheel speed") ;
+        for (i=0 ; i<4 ; ++i)
+        {
+            System.out.printf("\t\t%.1f", this.lastWheelAngularVel[i]) ;  
+        }
+        System.out.printf("\tdeg/sec\n") ;
+        
+        System.out.printf("recommend wheel speed") ;
+        for (i=0 ; i<4 ; ++i)
+        {
+            System.out.printf("\t\t%.1f", this.RecommendedWheelAngularVel[i]) ;  
+        }
+        System.out.printf("\tdeg/sec\n") ;
+
+    }
 }
+
+class main {
+    public static void notmain( String args[] ) {
+        
+        Drive veh = new Drive();
+        veh.assign_veh_values_for_square_vehicle(0.3302, 0.1016) ;
+        
+        double[] initial_steering_deg = {42.5, 33.6, 18.1, 21.9} ;
+        double[] initial_wheel_speed_deg_per_sec = {1.56, 11.3, 4.2, 10.4} ;
+        veh.initialize_steering_angles_and_wheel_speeds(initial_steering_deg,
+                                            initial_wheel_speed_deg_per_sec) ;
+        
+        // Example Case 1:
+        // set the current vehicle angle
+        veh.angle = Units.degreesToRadians( 30.0)  ;
+        
+        // set the desired velocity (linear and angular for the vehicle)
+        veh.centerVel[0] =  0.5 ;
+        veh.centerVel[1] =  1.1 ;
+        veh.angularVel  = 20.0 ;
+        
+        veh.calc_swerve_steering_and_speed() ;
+        veh.recommended_swerve_stering_and_speed() ;
+                
+        veh.print_results() ;  // print results of case 1     
+        
+        // Example Case 2: (translation case)
+        // set the current vehicle angle
+        veh.angle = Units.degreesToRadians(30.0 ) ;
+        
+        // set the desired velocity (linear and angular for the vehicle)
+        veh.centerVel[0] = 1.1 * Math.cos(Units.degreesToRadians(60.0)) ;
+        veh.centerVel[1] = 1.1 * Math.sin(Units.degreesToRadians(60.0)) ;
+        veh.angularVel  = 0.0 ;
+        
+        veh.calc_swerve_steering_and_speed() ;
+        veh.recommended_swerve_stering_and_speed() ;
+        
+        veh.print_results() ;  // print results of case 2 
+        
+        // Example Case 3: (recommend reverse wheel rotation based on current steering)
+        // set the current vehicle angle
+        veh.angle = Units.degreesToRadians(30.0 );
+        
+        // set the desired velocity (linear and angular for the vehicle)
+        veh.centerVel[0] = -1.1 * Math.cos(Units.degreesToRadians(60.0)) ;
+        veh.centerVel[1] = -1.1 * Math.sin(Units.degreesToRadians(60.0)) ;
+        veh.angularVel  = -25.0 ;
+        
+        veh.calc_swerve_steering_and_speed() ;
+        veh.recommended_swerve_stering_and_speed() ;
+        
+        veh.print_results() ;  // print results of case 3 
+    }
+
+}
+
+

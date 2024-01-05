@@ -31,13 +31,10 @@ public class Drive {
     public double[] wheelAngularVel = new double[4]; // velocidad de la rueda cuando gira no para avanzar si no para
                                                      // rotar en degrees/sec
 
-    public double[] lastSteeringAngle = new double[4];// Last Steering Angle. previous anglexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    public double[] lastSteeringAngle = new double[4];// Last Steering Angle. previous angles
     public double[] lastWheelAngularVel = new double[4]; // Last wheel angular velocity in degrees/secxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    public double[] desiredSteeringAngle = new double[4];// es a donde tu quieres que valla la rueda in degrees
-    public double[] DesiredWeelAngularVel = new double[4];// es a cuantos degrees/sec tu quieres que valla la rueda
-
-    public double[] RecommendedSteeringAngles = new double[4];// angle in degreexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    public double[] RecommendedSteeringAngles = new double[4];// angle in degrees
     public double[] RecommendedWheelAngularVel = new double[4];// degrees/secxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     public void assign_veh_values_for_square_vehicle(double d, double wheel_d) {
@@ -83,12 +80,12 @@ public class Drive {
         double speed;
 
         for (i = 0; i < 4; ++i) {
-            NewVel[0] = initialVeloity[0] - this.angularVel * Units.degreesToRadians(this.origin_pt[i][1]);
-            NewVel[1] = initialVeloity[1] + this.angularVel * Units.degreesToRadians(this.origin_pt[i][0]);
+            NewVel[0] = initialVeloity[0] - Units.degreesToRadians(this.angularVel) * this.origin_pt[i][1];
+            NewVel[1] = initialVeloity[1] + Units.degreesToRadians(this.angularVel) * this.origin_pt[i][0];
 
             speed = Math.sqrt(NewVel[0] * NewVel[0] + NewVel[1] * NewVel[1]);//calculate the speed with pythagorean theorem
-            this.lastSteeringAngle[i] = Units.degreesToRadians(Math.atan2(NewVel[1], NewVel[0]));
-            this.lastWheelAngularVel[i] = Units.degreesToRadians(speed) / (DrivetrainConstants.WHEEL_RADIUS_METERS);
+            this.lastSteeringAngle[i] = Units.radiansToDegrees(Math.atan2(NewVel[1], NewVel[0]));
+            this.lastWheelAngularVel[i] = Units.radiansToDegrees(speed / (0.1016 / 2));
         }
     }
 
@@ -111,17 +108,19 @@ public class Drive {
                 // don't switch direction from calculated.
                 this.RecommendedSteeringAngles[i] = this.steeringAngle[i] + differentialAngle;
                 this.RecommendedWheelAngularVel[i] = this.lastWheelAngularVel[i];
-            } else {
+            } 
+            else 
+            {
                 // will add 180 to calculated steering angle and rotate the wheel in the negaive
                 // direction
                 this.RecommendedSteeringAngles[i] = this.steeringAngle[i] + differentialAngle - 180;// it can be - it doesn't matter
 
-                this.RecommendedWheelAngularVel[i] = -this.lastWheelAngularVel[i];
+                this.RecommendedWheelAngularVel[i] = - this.lastWheelAngularVel[i];
 
                 while (this.RecommendedSteeringAngles[i] - this.steeringAngle[i] > 180.0){
                     this.RecommendedSteeringAngles[i] -= 360;
                 }
-                while (this.RecommendedSteeringAngles[i] - this.steeringAngle[i] < 180.0){
+                while (this.RecommendedSteeringAngles[i] - this.steeringAngle[i] < -180.0){
                     this.RecommendedSteeringAngles[i] += 360;
                 }
 

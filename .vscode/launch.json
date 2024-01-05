@@ -3,6 +3,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch main",
+      "request": "launch",
+      "mainClass": "frc.robot.subsystems.drive.main",
+      "projectName": "0-To-Swerve"
+    },
+    {
+      "type": "java",
       "name": "Launch Main",
       "request": "launch",
       "mainClass": "frc.robot.Main",

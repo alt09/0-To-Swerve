@@ -14,35 +14,35 @@ public class Drive {
 
     // chassis
 
-    double[][] origin_pt = new double[4][2]; // x,y coord of module point in vehicle coord sys
+    double[][] swervemodule_positions = new double[4][2]; // x,y coord of module point in vehicle coord sys
     // module 0 is in +x,+y quadrant
     // module 1 is in -x,+y quadrant
     // module 2 is in -x,-y quadrant
     // module 3 is in +x,-y quadrant
 
-    public double angle;// ungulo entre donde el robot mira y donde el robot esta derecho en el fild en
-                        // radianes(gyro)(rad)
-    public double[] centerVel = new double[2];// Velocity in m/s from the center (in the direction where the robot is
-                                              // going)
-    public double angularVel;// veloity in degrees/s of how fast the robot spins
+    public double angle;// angle of the rotation of the robot, the actual angle relative to the 0 degrees of the field 
+                        //  in radiants(gyro)(rad)
+    public double[] centerVel = new double[2];// Velocity where the center of the robot is going in m/s from the center (in the direction where the robot is x and y component)
+                                             
+    public double angularVel;// veloity in degrees/s of how fast the robot rotates
 
     // wheel
-    public double[] steeringAngle = new double[4];// es lo mismo que angle pero solo en las ruedas(in degrees)
-    public double[] wheelAngularVel = new double[4]; // velocidad de la rueda cuando gira no para avanzar si no para
-                                                     // rotar en degrees/sec
+    public double[] steeringAngle = new double[4];//same thing for angle but for each wheel instead (in degrees) for 4 modules 
+    public double[] wheelAngularVel = new double[4]; // velocity of the wheel to rotate in degrees per sec for 4 modules 
+                                                   
 
-    public double[] lastSteeringAngle = new double[4];// Last Steering Angle. previous angles
-    public double[] lastWheelAngularVel = new double[4]; // Last wheel angular velocity in degrees/secxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    public double[] lastSteeringAngle = new double[4];// Last Steering Angle. previous angles for 4 modules 
+    public double[] lastWheelAngularVel = new double[4]; // Last wheel angular velocity in degrees/secxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx for 4 modules 
 
-    public double[] RecommendedSteeringAngles = new double[4];// angle in degrees
-    public double[] RecommendedWheelAngularVel = new double[4];// degrees/secxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    public double[] RecommendedSteeringAngles = new double[4];// angle in degrees for 4 modules, the angle that we wamt to move on the wheel
+    public double[] RecommendedWheelAngularVel = new double[4];// degrees/secxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  for 4 modules 
 
-    public void assign_veh_values_for_square_vehicle(double d, double wheel_d) {
+    public void assign_veh_values_for_square_vehicle(double d, double wheel_d) { // Distaqnce between wheel pivot and teh center of the robot, wheel_d is wheel diameter
         // set the wheel diameter
         DrivetrainConstants.WHEEL_RADIUS_METERS = wheel_d;
 
-        // define the locations of the four swerve modules in the xv, yv coord sys
-
+        // define the locations of the four swerve modules in the xv, yv coord sy
+        //             # : 0 is x and y is 1 
         this.origin_pt[0][0] = d; // module 0 is in the +x,+y quadrant
         this.origin_pt[0][1] = d;
 
@@ -56,7 +56,7 @@ public class Drive {
         this.origin_pt[3][1] = -d;
     }
 
-    public void initialize_steering_angles_and_wheel_speeds(double[] steering_ang_deg,double[] wheel_speeds_deg_per_sec) {
+    public void initialize_steering_angles_and_wheel_speeds(double[] steering_ang_deg,double[] wheel_speeds_deg_per_sec) { // for testing
         int i;
         for (i = 0; i < 4; ++i) {
             this.steeringAngle[i] = steering_ang_deg[i];
@@ -68,24 +68,27 @@ public class Drive {
         int i;
         double sinValue, cosValue;
 
-        cosValue = Math.cos(this.angle);
-        sinValue = Math.sin(this.angle);
+        cosValue = Math.cos(this.angle); // cos of the angle between where is the robot looking at and the 0 degrees (this amgle is from the gyro)
+        sinValue = Math.sin(this.angle); // cos of the angle between where is the robot looking at and the 0 degrees (this angle is from the gyro)
 
-        // calculate the vehicle velocity in the vehicle coord sys
-        double[] initialVeloity = new double[2];//m/s
-        initialVeloity[0] = cosValue * this.centerVel[0] + sinValue * this.centerVel[1];//x component for the velocity
-        initialVeloity[1] = -sinValue * this.centerVel[0] + cosValue * this.centerVel[1];//y velocity for the velocity 
+        // calculate the robot velocity in the vehicle coord sys
+        double[] initialVeloity = new double[2];// in m/s
 
-        double[] NewVel = new double[2];
+        initialVeloity[0] = cosValue * this.centerVel[0] + sinValue * this.centerVel[1];// x component for the velocity here we are getting Vx 
+        initialVeloity[1] = -sinValue * this.centerVel[0] + cosValue * this.centerVel[1];// y velocity for the velocity here we are getting Vy
+
+        double[] NewVel = new double[2]; // x(0) and y(1) component
         double speed;
+        
 
         for (i = 0; i < 4; ++i) {
-            NewVel[0] = initialVeloity[0] - Units.degreesToRadians(this.angularVel) * this.origin_pt[i][1];
-            NewVel[1] = initialVeloity[1] + Units.degreesToRadians(this.angularVel) * this.origin_pt[i][0];
+            NewVel[0] = initialVeloity[0] - Units.degreesToRadians(this.angularVel) * this.origin_pt[i][1]; // x component of the velocity * our angular velocity in radiants * our distance 
+            NewVel[1] = initialVeloity[1] + Units.degreesToRadians(this.angularVel) * this.origin_pt[i][0]; // rad per sec
 
             speed = Math.sqrt(NewVel[0] * NewVel[0] + NewVel[1] * NewVel[1]);//calculate the speed with pythagorean theorem
             this.lastSteeringAngle[i] = Units.radiansToDegrees(Math.atan2(NewVel[1], NewVel[0]));
-            this.lastWheelAngularVel[i] = Units.radiansToDegrees(speed / (0.1016 / 2));
+            this.lastWheelAngularVel[i] = Units.radiansToDegrees(speed / (0.1016 / 2)); //0.1016 is the wheel diameter in meters  converting from rad per meter to degrees per meter 
+            //TODO: CHANGE YOUR 0.1016/2 TO A VARIABLE OR CONSTANT CALLED RADIUS 
         }
     }
 
@@ -94,9 +97,8 @@ public class Drive {
         double differentialAngle;// the angle of difference in degress
 
         for (i = 0; i < 4; ++i) {
-            differentialAngle = this.lastSteeringAngle[i] - this.steeringAngle[i];// the difference between between the
-                                                                                  // angle where are looking the wheels
-            // bound the difference between -180 and +180 degrees
+            differentialAngle = this.lastSteeringAngle[i] - this.steeringAngle[i];// the angle that we want - the angle that we have in order to get the angle that we need to translate 
+            // bound the difference between -180 and +180 degrees to find the most efficient move 
             while (differentialAngle < 180.0) {
                 differentialAngle += 360.0;
             }
@@ -105,7 +107,7 @@ public class Drive {
             }
 
             if (Math.abs(differentialAngle) < 90.0) {
-                // don't switch direction from calculated.
+                //to find the best and most efficient way to ratate wthe wheel 
                 this.RecommendedSteeringAngles[i] = this.steeringAngle[i] + differentialAngle;
                 this.RecommendedWheelAngularVel[i] = this.lastWheelAngularVel[i];
             } 

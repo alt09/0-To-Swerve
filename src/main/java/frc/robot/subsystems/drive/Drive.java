@@ -79,18 +79,18 @@ public class Drive {
         Recommended_Robot_Velocity[0] = cosValue * this.centerVel[0] + sinValue * this.centerVel[1];//  translating the x from the field perspective to the x robot perspective
         Recommended_Robot_Velocity[1] = -sinValue * this.centerVel[0] + cosValue * this.centerVel[1];// translating the y from the field perspective to the y robot perspective 
 
-        double[] NewVel = new double[2]; // x(0) and y(1) component
+        double[] module_velocity = new double[2]; // x(0) and y(1) component
         double speed;
         
 
         for (i = 0; i < 4; ++i) {
-            NewVel[0] = Recommended_Robot_Velocity[0] - Units.degreesToRadians(this.angularVel) * this.swervemodule_positions[i][1]; // x component of the velocity * our angular velocity in radiants * our distance 
-            NewVel[1] = Recommended_Robot_Velocity[1] + Units.degreesToRadians(this.angularVel) * this.swervemodule_positions[i][0]; // rad per sec
+            // individial velocity of each module 
+            module_velocity[0] = Recommended_Robot_Velocity[0] - Units.degreesToRadians(this.angularVel) * this.swervemodule_positions[i][1]; // x component of the velocity * our angular velocity in radiants * our distance 
+            module_velocity[1] = Recommended_Robot_Velocity[1] + Units.degreesToRadians(this.angularVel) * this.swervemodule_positions[i][0]; // rad per sec
 
-            speed = Math.sqrt(NewVel[0] * NewVel[0] + NewVel[1] * NewVel[1]);//calculate the speed with pythagorean theorem
-            this.lastSteeringAngle[i] = Units.radiansToDegrees(Math.atan2(NewVel[1], NewVel[0]));
-            this.lastWheelAngularVel[i] = Units.radiansToDegrees(speed / (0.1016 / 2)); //0.1016 is the wheel diameter in meters  converting from rad per meter to degrees per meter 
-            //TODO: CHANGE YOUR 0.1016/2 TO A VARIABLE OR CONSTANT CALLED RADIUS 
+            speed = Math.sqrt(module_velocity[0] * module_velocity[0] + module_velocity[1] * module_velocity[1]);//calculate the speed with pythagorean theorem
+            this.lastSteeringAngle[i] = Units.radiansToDegrees(Math.atan2(module_velocity[1], module_velocity[0]));
+            this.lastWheelAngularVel[i] = Units.radiansToDegrees(speed / (Constants.RobotConstants.DrivetrainConstants.WHEEL_RADIUS_METERS)); // wheel diameter in meters  converting from rad per meter to degrees per meter 
         }
     }
 

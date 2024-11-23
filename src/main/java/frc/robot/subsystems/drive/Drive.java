@@ -6,11 +6,13 @@ package frc.robot.subsystems.drive;
 
 import frc.robot.Constants;
 import frc.robot.Constants.RobotConstants.DrivetrainConstants;
+
+import javax.print.DocFlavor.READER;
+
 import edu.wpi.first.math.util.Units;
 
 /** Add your docs here. */
 public class Drive {
-    // TODO:change to english(it is in spanish)
 
     // chassis
 
@@ -24,7 +26,7 @@ public class Drive {
                         //  in radiants(gyro)(rad)
     public double[] centerVel = new double[2];// Velocity where the center of the robot is going in m/s from the center (in the direction where the robot is x and y component)
                                              
-    public double angularVel;// veloity in degrees/s of how fast the robot rotates
+    public double angularVel;// velocity in degrees/s of how fast the robot rotates
 
     // wheel
     public double[] steeringAngle = new double[4];//same thing for angle but for each wheel instead (in degrees) for 4 modules 
@@ -43,17 +45,17 @@ public class Drive {
 
         // define the locations of the four swerve modules in the xv, yv coord sy
         //             # : 0 is x and y is 1 
-        this.origin_pt[0][0] = d; // module 0 is in the +x,+y quadrant
-        this.origin_pt[0][1] = d;
+        this.swervemodule_positions[0][0] = d; // module 0 is in the +x,+y quadrant
+        this.swervemodule_positions[0][1] = d;
 
-        this.origin_pt[1][0] = -d; // module 1 is in the -x,+y quadrant
-        this.origin_pt[1][1] = d;
+        this.swervemodule_positions[1][0] = -d; // module 1 is in the -x,+y quadrant
+        this.swervemodule_positions[1][1] = d;
 
-        this.origin_pt[2][0] = -d; // module 2 is in the -x,-y quadrant
-        this.origin_pt[2][1] = -d;
+        this.swervemodule_positions[2][0] = -d; // module 2 is in the -x,-y quadrant
+        this.swervemodule_positions[2][1] = -d;
 
-        this.origin_pt[3][0] = d; // module 3 is in the +x,-y quadrant
-        this.origin_pt[3][1] = -d;
+        this.swervemodule_positions[3][0] = d; // module 3 is in the +x,-y quadrant
+        this.swervemodule_positions[3][1] = -d;
     }
 
     public void initialize_steering_angles_and_wheel_speeds(double[] steering_ang_deg,double[] wheel_speeds_deg_per_sec) { // for testing
@@ -72,18 +74,18 @@ public class Drive {
         sinValue = Math.sin(this.angle); // cos of the angle between where is the robot looking at and the 0 degrees (this angle is from the gyro)
 
         // calculate the robot velocity in the vehicle coord sys
-        double[] initialVeloity = new double[2];// in m/s
+        double[] Recommended_Robot_Velocity = new double[2];// in m/s
 
-        initialVeloity[0] = cosValue * this.centerVel[0] + sinValue * this.centerVel[1];// x component for the velocity here we are getting Vx 
-        initialVeloity[1] = -sinValue * this.centerVel[0] + cosValue * this.centerVel[1];// y velocity for the velocity here we are getting Vy
+        Recommended_Robot_Velocity[0] = cosValue * this.centerVel[0] + sinValue * this.centerVel[1];//  translating the x from the field perspective to the x robot perspective
+        Recommended_Robot_Velocity[1] = -sinValue * this.centerVel[0] + cosValue * this.centerVel[1];// translating the y from the field perspective to the y robot perspective 
 
         double[] NewVel = new double[2]; // x(0) and y(1) component
         double speed;
         
 
         for (i = 0; i < 4; ++i) {
-            NewVel[0] = initialVeloity[0] - Units.degreesToRadians(this.angularVel) * this.origin_pt[i][1]; // x component of the velocity * our angular velocity in radiants * our distance 
-            NewVel[1] = initialVeloity[1] + Units.degreesToRadians(this.angularVel) * this.origin_pt[i][0]; // rad per sec
+            NewVel[0] = Recommended_Robot_Velocity[0] - Units.degreesToRadians(this.angularVel) * this.swervemodule_positions[i][1]; // x component of the velocity * our angular velocity in radiants * our distance 
+            NewVel[1] = Recommended_Robot_Velocity[1] + Units.degreesToRadians(this.angularVel) * this.swervemodule_positions[i][0]; // rad per sec
 
             speed = Math.sqrt(NewVel[0] * NewVel[0] + NewVel[1] * NewVel[1]);//calculate the speed with pythagorean theorem
             this.lastSteeringAngle[i] = Units.radiansToDegrees(Math.atan2(NewVel[1], NewVel[0]));

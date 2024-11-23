@@ -41,7 +41,7 @@ public class Drive {
 
     public void assign_veh_values_for_square_vehicle(double d, double wheel_d) { // Distaqnce between wheel pivot and teh center of the robot, wheel_d is wheel diameter
         // set the wheel diameter
-        DrivetrainConstants.WHEEL_RADIUS_METERS = wheel_d;
+        DrivetrainConstants.WHEEL_DIAMETER_METERS = wheel_d;
 
         // define the locations of the four swerve modules in the xv, yv coord sy
         //             # : 0 is x and y is 1 
@@ -80,7 +80,7 @@ public class Drive {
         Recommended_Robot_Velocity[1] = -sinValue * this.centerVel[0] + cosValue * this.centerVel[1];// translating the y from the field perspective to the y robot perspective 
 
         double[] module_velocity = new double[2]; // x(0) and y(1) component
-        double speed;
+        double Chassis_Speed;
         
 
         for (i = 0; i < 4; ++i) {
@@ -88,9 +88,9 @@ public class Drive {
             module_velocity[0] = Recommended_Robot_Velocity[0] - Units.degreesToRadians(this.angularVel) * this.swervemodule_positions[i][1]; // x component of the velocity * our angular velocity in radiants * our distance 
             module_velocity[1] = Recommended_Robot_Velocity[1] + Units.degreesToRadians(this.angularVel) * this.swervemodule_positions[i][0]; // rad per sec
 
-            speed = Math.sqrt(module_velocity[0] * module_velocity[0] + module_velocity[1] * module_velocity[1]);//calculate the speed with pythagorean theorem
+            Chassis_Speed = Math.sqrt(module_velocity[0] * module_velocity[0] + module_velocity[1] * module_velocity[1]);//calculate the speed that we the robot should go using the pythagorean theorem
             this.lastSteeringAngle[i] = Units.radiansToDegrees(Math.atan2(module_velocity[1], module_velocity[0]));
-            this.lastWheelAngularVel[i] = Units.radiansToDegrees(speed / (Constants.RobotConstants.DrivetrainConstants.WHEEL_RADIUS_METERS)); // wheel diameter in meters  converting from rad per meter to degrees per meter 
+            this.lastWheelAngularVel[i] = Units.radiansToDegrees(Chassis_Speed / (Constants.RobotConstants.DrivetrainConstants.WHEEL_DIAMETER_METERS/2)); // wheel diameter in meters  converting from rad per meter to degrees per meter 
         }
     }
 
@@ -193,61 +193,4 @@ public class Drive {
 
     }
 }
-
-class main {
-    public static void notmain( String args[] ) {
-        
-        Drive veh = new Drive();
-        veh.assign_veh_values_for_square_vehicle(0.3302, 0.1016) ;
-        
-        double[] initial_steering_deg = {42.5, 33.6, 18.1, 21.9} ;
-        double[] initial_wheel_speed_deg_per_sec = {1.56, 11.3, 4.2, 10.4} ;
-        veh.initialize_steering_angles_and_wheel_speeds(initial_steering_deg,
-                                            initial_wheel_speed_deg_per_sec) ;
-        
-        // Example Case 1:
-        // set the current vehicle angle
-        veh.angle = Units.degreesToRadians( 30.0)  ;
-        
-        // set the desired velocity (linear and angular for the vehicle)
-        veh.centerVel[0] =  0.5 ;
-        veh.centerVel[1] =  1.1 ;
-        veh.angularVel  = 20.0 ;
-        
-        veh.calc_swerve_steering_and_speed() ;
-        veh.recommended_swerve_stering_and_speed() ;
-                
-        veh.print_results() ;  // print results of case 1     
-        
-        // Example Case 2: (translation case)
-        // set the current vehicle angle
-        veh.angle = Units.degreesToRadians(30.0 ) ;
-        
-        // set the desired velocity (linear and angular for the vehicle)
-        veh.centerVel[0] = 1.1 * Math.cos(Units.degreesToRadians(60.0)) ;
-        veh.centerVel[1] = 1.1 * Math.sin(Units.degreesToRadians(60.0)) ;
-        veh.angularVel  = 0.0 ;
-        
-        veh.calc_swerve_steering_and_speed() ;
-        veh.recommended_swerve_stering_and_speed() ;
-        
-        veh.print_results() ;  // print results of case 2 
-        
-        // Example Case 3: (recommend reverse wheel rotation based on current steering)
-        // set the current vehicle angle
-        veh.angle = Units.degreesToRadians(30.0 );
-        
-        // set the desired velocity (linear and angular for the vehicle)
-        veh.centerVel[0] = -1.1 * Math.cos(Units.degreesToRadians(60.0)) ;
-        veh.centerVel[1] = -1.1 * Math.sin(Units.degreesToRadians(60.0)) ;
-        veh.angularVel  = -25.0 ;
-        
-        veh.calc_swerve_steering_and_speed() ;
-        veh.recommended_swerve_stering_and_speed() ;
-        
-        veh.print_results() ;  // print results of case 3 
-    }
-
-}
-
 

@@ -116,7 +116,7 @@ public final class Constants {
       }
   
       // Wheel Facts
-      public static double WHEEL_RADIUS_METERS = Units.inchesToMeters(2);
+      public static double WHEEL_DIAMETER_METERS = Units.inchesToMeters(2);
   
       // Under this to switch to coast when disabling
       public static final double COAST_THERESHOULD_METERS_PER_SEC = 0.05;
